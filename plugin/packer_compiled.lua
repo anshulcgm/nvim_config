@@ -221,6 +221,11 @@ _G.packer_plugins = {
     path = "/Users/anshulahluwalia/.local/share/nvim/site/pack/packer/start/typescript.nvim",
     url = "https://github.com/jose-elias-alvarez/typescript.nvim"
   },
+  ["vim-clang-format"] = {
+    loaded = true,
+    path = "/Users/anshulahluwalia/.local/share/nvim/site/pack/packer/start/vim-clang-format",
+    url = "https://github.com/rhysd/vim-clang-format"
+  },
   ["vim-maximizer"] = {
     loaded = true,
     path = "/Users/anshulahluwalia/.local/share/nvim/site/pack/packer/start/vim-maximizer",
