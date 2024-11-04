@@ -21,6 +21,9 @@ keymap.set("n", "<leader>tx", ":tabclose<CR>") -- close current tab
 keymap.set("n", "<leader>tn", ":tabn<CR>") -- go to next tab
 keymap.set("n", "<leader>tp", ":tabp<CR>") -- go to previous tab
 
+-- resize windows
+keymap.set("n", "_", "<C-w><") -- decrease window width
+keymap.set("n", "+", "<C-w>>") -- increase window width
 -- plugin keymaps
 
 -- vim-maximizer

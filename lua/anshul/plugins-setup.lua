@@ -103,6 +103,9 @@ return packer.startup(function(use)
 	-- sshfs plugin for easy remote development
 	use("nosduco/remote-sshfs.nvim")
 
+	--plugin for auto save
+	use("Pocco81/auto-save.nvim")
+
 	if packer_bootstrap then
 		require("packer").sync()
 	end
