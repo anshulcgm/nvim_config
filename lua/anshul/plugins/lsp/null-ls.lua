@@ -1,22 +1,19 @@
--- import null-ls plugin safely
-local setup, null_ls = pcall(require, "null-ls")
+-- import none-ls plugin safely
+local setup, null_ls = pcall(require, "none-ls")
 if not setup then
   return
 end
-
 -- for conciseness
 local formatting = null_ls.builtins.formatting -- to setup formatters
 local diagnostics = null_ls.builtins.diagnostics -- to setup linters
-
 -- to setup format on save
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
-
--- configure null_ls
+-- configure none_ls
 null_ls.setup({
   -- setup formatters & linters
   sources = {
     --  to disable file types use
-    --  "formatting.prettier.with({disabled_filetypes = {}})" (see null-ls docs)
+    --  "formatting.prettier.with({disabled_filetypes = {}})" (see none-ls docs)
     formatting.prettier, -- js/ts formatter
     formatting.stylua, -- lua formatter
     diagnostics.eslint_d.with({ -- js/ts linter
@@ -36,8 +33,8 @@ null_ls.setup({
         callback = function()
           vim.lsp.buf.format({
             filter = function(client)
-              --  only use null-ls for formatting instead of lsp server
-              return client.name == "null-ls"
+              --  only use none-ls for formatting instead of lsp server
+              return client.name == "none-ls"
             end,
             bufnr = bufnr,
           })

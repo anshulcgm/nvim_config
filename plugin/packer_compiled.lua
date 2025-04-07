@@ -154,10 +154,10 @@ _G.packer_plugins = {
     path = "/home/anshul/.local/share/nvim/site/pack/packer/start/mason.nvim",
     url = "https://github.com/williamboman/mason.nvim"
   },
-  ["null-ls.nvim"] = {
+  ["none-ls.nvim"] = {
     loaded = true,
-    path = "/home/anshul/.local/share/nvim/site/pack/packer/start/null-ls.nvim",
-    url = "https://github.com/jose-elias-alvarez/null-ls.nvim"
+    path = "/home/anshul/.local/share/nvim/site/pack/packer/start/none-ls.nvim",
+    url = "https://github.com/nvimtools/none-ls.nvim"
   },
   ["nvim-autopairs"] = {
     loaded = true,
@@ -228,7 +228,7 @@ _G.packer_plugins = {
   },
   ["vim-clang-format"] = {
     loaded = true,
-    path = "/Users/anshulahluwalia/.local/share/nvim/site/pack/packer/start/vim-clang-format",
+    path = "/home/anshul/.local/share/nvim/site/pack/packer/start/vim-clang-format",
     url = "https://github.com/rhysd/vim-clang-format"
   },
   ["vim-maximizer"] = {
