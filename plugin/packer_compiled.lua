@@ -220,7 +220,7 @@ _G.packer_plugins = {
   },
   ["telescope-live-grep-args.nvim"] = {
     loaded = true,
-    path = "/home/anshul/.local/share/nvim/site/pack/packer/start/telescope-live-grep-args.nvim",
+    path = "/Users/anshulahluwalia/.local/share/nvim/site/pack/packer/start/telescope-live-grep-args.nvim",
     url = "https://github.com/nvim-telescope/telescope-live-grep-args.nvim"
   },
   ["telescope.nvim"] = {
