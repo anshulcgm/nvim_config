@@ -6,9 +6,31 @@ local actions_setup, actions = pcall(require, "telescope.actions")
 if not actions_setup then
 	return
 end
+
+local lga_ok, lga_actions = pcall(require, "telescope-live-grep-args.actions")
+
 -- configure telescope
+local extensions = {
+	fzf = {
+		fuzzy = true,
+		override_generic_sorter = true,
+		override_file_sorter = true,
+		case_mode = "smart_case",
+	},
+}
+
+if lga_ok then
+	extensions.live_grep_args = {
+		auto_quoting = true,
+		mappings = {
+			i = {
+				["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
+			},
+		},
+	}
+end
+
 telescope.setup({
-	-- configure custom mappings
 	defaults = {
 		mappings = {
 			i = {
@@ -18,24 +40,10 @@ telescope.setup({
 			},
 		},
 	},
-	extensions = {
-		fzf = {
-			fuzzy = true,
-			override_generic_sorter = true,
-			override_file_sorter = true,
-			case_mode = "smart_case",
-		},
-		live_grep_args = {
-			auto_quoting = true, -- enable/disable auto-quoting
-			-- define mappings, e.g.
-			mappings = {
-				i = {
-					["<C-i>"] = require("telescope-live-grep-args.actions").quote_prompt({ postfix = " --iglob " }),
-				},
-			},
-		},
-	},
+	extensions = extensions,
 })
 
 telescope.load_extension("fzf")
-telescope.load_extension("live_grep_args")
+if lga_ok then
+	telescope.load_extension("live_grep_args")
+end

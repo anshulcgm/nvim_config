@@ -22,7 +22,7 @@ mason.setup()
 mason_lspconfig.setup({
   -- list of servers for mason to install
   ensure_installed = {
-    "tsserver",
+    "ts_ls",
     "html",
     "cssls",
     "tailwindcss",
@@ -33,6 +33,8 @@ mason_lspconfig.setup({
   },
   -- auto-install configured servers (with lspconfig)
   automatic_installation = true, -- not the same as ensure_installed
+  -- disable auto-enable so lspconfig.lua controls server setup (avoids duplicate clients)
+  automatic_enable = false,
 })
 
 mason_null_ls.setup({
