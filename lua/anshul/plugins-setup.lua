@@ -103,6 +103,13 @@ return packer.startup(function(use)
 	-- sshfs plugin for easy remote development
 	use("nosduco/remote-sshfs.nvim")
 
+	-- markdown preview
+	use({
+		"iamcco/markdown-preview.nvim",
+		run = "cd app && npm install",
+		ft = { "markdown" },
+	})
+
 	if packer_bootstrap then
 		require("packer").sync()
 	end
