@@ -6,7 +6,7 @@ end
 local function on_attach(bufnr)
 	local api = require("nvim-tree.api")
 	api.map.on_attach.default(bufnr)
-	vim.keymap.set("n", "<C-l>", "<cmd>TmuxNavigateRight<CR>", {
+	vim.keymap.set("n", "<C-l>", "<cmd>wincmd l<CR>", {
 		buffer = bufnr,
 		desc = "Navigate right",
 		noremap = true,
