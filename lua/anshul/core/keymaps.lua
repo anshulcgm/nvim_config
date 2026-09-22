@@ -18,6 +18,14 @@ keymap.set("n", "<leader>tx", ":tabclose<CR>") -- close current tab
 keymap.set("n", "<leader>tn", ":tabn<CR>") -- go to next tab
 keymap.set("n", "<leader>tp", ":tabp<CR>") -- go to previous tab
 
+-- native split navigation outside tmux
+if not vim.env.TMUX then
+	keymap.set("n", "<C-h>", "<cmd>wincmd h<CR>", { desc = "Navigate left", silent = true })
+	keymap.set("n", "<C-j>", "<cmd>wincmd j<CR>", { desc = "Navigate down", silent = true })
+	keymap.set("n", "<C-k>", "<cmd>wincmd k<CR>", { desc = "Navigate up", silent = true })
+	keymap.set("n", "<C-l>", "<cmd>wincmd l<CR>", { desc = "Navigate right", silent = true })
+end
+
 -- resize windows
 keymap.set("n", "_", "<C-w><") -- decrease window width
 keymap.set("n", "+", "<C-w>>") -- increase window width

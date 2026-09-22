@@ -1,3 +1,7 @@
+if not vim.env.TMUX then
+	vim.g.tmux_navigator_no_mappings = 1
+end
+
 require("anshul.plugins-setup")
 require("anshul.core.options")
 require("anshul.core.keymaps")
