@@ -3,28 +3,10 @@ if not setup then
 	return
 end
 
-local function navigate_right()
-	local current_win = vim.api.nvim_get_current_win()
-	local has_editor_window = false
-
-	for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
-		if win ~= current_win and vim.api.nvim_win_get_config(win).relative == "" then
-			has_editor_window = true
-			break
-		end
-	end
-
-	if has_editor_window then
-		vim.cmd("TmuxNavigateRight")
-	else
-		vim.cmd("vnew")
-	end
-end
-
 local function on_attach(bufnr)
 	local api = require("nvim-tree.api")
 	api.map.on_attach.default(bufnr)
-	vim.keymap.set("n", "<C-l>", navigate_right, {
+	vim.keymap.set("n", "<C-l>", "<cmd>TmuxNavigateRight<CR>", {
 		buffer = bufnr,
 		desc = "Navigate right",
 		noremap = true,
