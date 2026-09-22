@@ -1,18 +1,6 @@
--- import lspconfig plugin safely
-local lspconfig_status, lspconfig = pcall(require, "lspconfig")
-if not lspconfig_status then
-  return
-end
-
 -- import cmp-nvim-lsp plugin safely
 local cmp_nvim_lsp_status, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
 if not cmp_nvim_lsp_status then
-  return
-end
-
--- import typescript plugin safely
-local typescript_setup, typescript = pcall(require, "typescript")
-if not typescript_setup then
   return
 end
 
@@ -39,15 +27,47 @@ local on_attach = function(client, bufnr)
   keymap.set("n", "<leader>o", "<cmd>LSoutlineToggle<CR>", opts) -- see outline on right hand side
 
   -- typescript specific keymaps (e.g. rename file and update imports)
-  if client.name == "tsserver" then
-    keymap.set("n", "<leader>rf", ":TypescriptRenameFile<CR>") -- rename file and update imports
-    keymap.set("n", "<leader>oi", ":TypescriptOrganizeImports<CR>") -- organize imports (not in youtube nvim video)
-    keymap.set("n", "<leader>ru", ":TypescriptRemoveUnused<CR>") -- remove unused variables (not in youtube nvim video)
+  if client.name == "ts_ls" then
+    keymap.set("n", "<leader>oi", function()
+      vim.lsp.buf.code_action({
+        apply = true,
+        context = {
+          only = { "source.organizeImports.ts" },
+          diagnostics = {},
+        },
+      })
+    end, opts) -- organize imports
   end
 end
 
 -- used to enable autocompletion (assign to every lsp server config)
 local capabilities = cmp_nvim_lsp.default_capabilities()
+
+local function command_output(command)
+  local output = vim.fn.system(command)
+  if vim.v.shell_error ~= 0 then
+    return nil
+  end
+  local result = nil
+  for line in output:gmatch("[^\r\n]+") do
+    line = vim.fn.trim(line)
+    if line ~= "" and not line:match("^bash: warning:") then
+      result = line
+    end
+  end
+  return result
+end
+
+local clangd_cmd = {
+  "clangd",
+  "--background-index",
+  "--query-driver=/nix/store/*-clang-wrapper-*/bin/clang++,/nix/store/*-clang-wrapper-*/bin/c++",
+}
+
+local clang_resource_dir = command_output("clang++ -print-resource-dir")
+if clang_resource_dir and clang_resource_dir ~= "" then
+  table.insert(clangd_cmd, "--resource-dir=" .. clang_resource_dir)
+end
 
 -- Change the Diagnostic symbols in the sign column (gutter)
 -- (not in youtube nvim video)
@@ -58,52 +78,51 @@ for type, icon in pairs(signs) do
 end
 
 -- configure html server
-lspconfig["html"].setup({
+vim.lsp.config("html", {
   capabilities = capabilities,
   on_attach = on_attach,
 })
 
--- configure typescript server with plugin
-typescript.setup({
-  server = {
-    capabilities = capabilities,
-    on_attach = on_attach,
-  },
+-- configure typescript server
+vim.lsp.config("ts_ls", {
+  capabilities = capabilities,
+  on_attach = on_attach,
 })
 
 -- configure css server
-lspconfig["cssls"].setup({
+vim.lsp.config("cssls", {
   capabilities = capabilities,
   on_attach = on_attach,
 })
 
 -- configure tailwindcss server
-lspconfig["tailwindcss"].setup({
+vim.lsp.config("tailwindcss", {
   capabilities = capabilities,
   on_attach = on_attach,
 })
 
 -- configure emmet language server
-lspconfig["emmet_ls"].setup({
+vim.lsp.config("emmet_ls", {
   capabilities = capabilities,
   on_attach = on_attach,
   filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
 })
 
 -- configure clangd server
-lspconfig["clangd"].setup({
+vim.lsp.config("clangd", {
+  cmd = clangd_cmd,
   capabilities = capabilities,
   on_attach = on_attach
 })
 
 -- configure pylsp server
-lspconfig["pylsp"].setup({
+vim.lsp.config("pylsp", {
   capabilities = capabilities,
   on_attach = on_attach
 })
 
 -- configure lua server (with special settings)
-lspconfig["lua_ls"].setup({
+vim.lsp.config("lua_ls", {
   capabilities = capabilities,
   on_attach = on_attach,
   settings = { -- custom settings for lua
@@ -121,4 +140,15 @@ lspconfig["lua_ls"].setup({
       },
     },
   },
+})
+
+vim.lsp.enable({
+  "html",
+  "ts_ls",
+  "cssls",
+  "tailwindcss",
+  "emmet_ls",
+  "clangd",
+  "pylsp",
+  "lua_ls",
 })

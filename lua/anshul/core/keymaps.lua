@@ -22,6 +22,9 @@ keymap.set("n", "<leader>tp", ":tabp<CR>") -- go to previous tab
 keymap.set("n", "_", "<C-w><") -- decrease window width
 keymap.set("n", "+", "<C-w>>") -- increase window width
 
+-- markdown preview
+keymap.set("n", "<leader>mp", ":MarkdownPreviewToggle<CR>") -- toggle markdown preview in browser
+
 -- plugin keymaps
 -- vim-maximizer
 keymap.set("n", "<leader>sm", ":MaximizerToggle<CR>") -- maximize the split window

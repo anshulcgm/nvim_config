@@ -17,7 +17,9 @@ if not mason_null_ls_status then
 end
 
 -- enable mason
-mason.setup()
+mason.setup({
+  PATH = "append",
+})
 
 mason_lspconfig.setup({
   -- list of servers for mason to install
