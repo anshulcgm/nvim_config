@@ -25,7 +25,28 @@ if not status then
 	return
 end
 
-return packer.startup(function(use)
+return packer.startup(function(packer_use)
+	local plugin_locks = {}
+	local lock_path = vim.fn.stdpath("config") .. "/packer-lock.json"
+	local read_ok, lock_lines = pcall(vim.fn.readfile, lock_path)
+	if read_ok then
+		local decode_ok, decoded = pcall(vim.json.decode, table.concat(lock_lines, "\n"))
+		if decode_ok then
+			plugin_locks = decoded
+		end
+	end
+
+	local function use(spec)
+		local plugin_spec = type(spec) == "string" and { spec } or spec
+		local repository = plugin_spec[1]
+		local plugin_name = type(repository) == "string" and repository:match("([^/]+)$")
+		local lock = plugin_name and plugin_locks[plugin_name]
+		if lock and lock.commit and not plugin_spec.commit then
+			plugin_spec.commit = lock.commit
+		end
+		return packer_use(plugin_spec)
+	end
+
 	use("wbthomason/packer.nvim")
 
 	-- lua functions that many plugins use
