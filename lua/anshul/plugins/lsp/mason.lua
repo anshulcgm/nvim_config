@@ -21,18 +21,25 @@ mason.setup({
   PATH = "append",
 })
 
+local ensure_installed = {
+  "ts_ls",
+  "html",
+  "cssls",
+  "tailwindcss",
+  "lua_ls",
+  "emmet_ls",
+  "pylsp",
+}
+
+-- Mason does not publish clangd for every platform (notably Linux ARM64).
+-- Prefer an available system clangd and let Mason supply it only as a fallback.
+if vim.fn.executable("clangd") == 0 then
+  table.insert(ensure_installed, "clangd")
+end
+
 mason_lspconfig.setup({
   -- list of servers for mason to install
-  ensure_installed = {
-    "ts_ls",
-    "html",
-    "cssls",
-    "tailwindcss",
-    "lua_ls",
-    "emmet_ls",
-    "clangd",
-    "pylsp",
-  },
+  ensure_installed = ensure_installed,
   -- auto-install configured servers (with lspconfig)
   automatic_installation = true, -- not the same as ensure_installed
   -- disable auto-enable so lspconfig.lua controls server setup (avoids duplicate clients)
