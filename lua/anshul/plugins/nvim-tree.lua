@@ -3,6 +3,17 @@ if not setup then
 	return
 end
 
+local function on_attach(bufnr)
+	local api = require("nvim-tree.api")
+	api.map.on_attach.default(bufnr)
+	vim.keymap.set("n", "<C-l>", "<cmd>TmuxNavigateRight<CR>", {
+		buffer = bufnr,
+		desc = "Navigate right",
+		noremap = true,
+		silent = true,
+	})
+end
+
 -- recommended settings from nvim-tree documentation
 vim.g.loaded = 1
 vim.g.loaded_netrwPlugin = 1
@@ -12,6 +23,7 @@ vim.cmd([[ highlight NvimTreeIndentMarker guifg=#3FC5FF ]])
 
 -- configure nvim-tree
 nvimtree.setup({
+	on_attach = on_attach,
 	-- change folder arrow icons
 	renderer = {
 		icons = {
